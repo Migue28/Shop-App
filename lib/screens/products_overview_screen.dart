@@ -31,11 +31,11 @@ class ProductsOverviewScreeen extends StatelessWidget {
     ),
     Product(
       id: 'p4',
-      title: 'Soupa de Macaco',
+      title: 'Shiro',
       description: 'Prepare any meal you want.',
       price: 49.99,
       imageUrl:
-          'https://i0.wp.com/www.mobileworldlive.com/wp-content/uploads/2019/12/Brazil.png?fit=650%2C400&ssl=1',
+          'https://vignette.wikia.nocookie.net/no-game-no-life/images/0/09/Shiro.png/revision/latest?cb=20170323163115',
     ),
   ];
 
