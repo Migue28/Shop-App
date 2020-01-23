@@ -7,35 +7,35 @@ class ProductsOverviewScreeen extends StatelessWidget {
   final List<Product> loadedProducts = [
     Product(
       id: 'p1',
-      title: 'Red Shirt',
+      title: 'Tsukiko Tsutsukakushi',
       description: 'A red shirt - it is pretty red!',
       price: 29.99,
       imageUrl:
-          'https://cdn.pixabay.com/photo/2016/10/02/22/17/red-t-shirt-1710578_1280.jpg',
+          'http://pm1.narvii.com/6682/1bdc8c9da88349d05bff552c2357181fdd17db21_00.jpg',
     ),
     Product(
       id: 'p2',
-      title: 'Trousers',
+      title: 'Okita Souji',
       description: 'A nice pair of trousers.',
       price: 59.99,
       imageUrl:
-          'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Trousers%2C_dress_%28AM_1960.022-8%29.jpg/512px-Trousers%2C_dress_%28AM_1960.022-8%29.jpg',
+          'https://c4.wallpaperflare.com/wallpaper/829/114/563/fate-series-fate-grand-order-okita-souji-wallpaper-preview.jpg',
     ),
     Product(
       id: 'p3',
-      title: 'Yellow Scarf',
+      title: 'Eucliwood Hellscythe',
       description: 'Warm and cozy - exactly what you need for the winter.',
       price: 19.99,
       imageUrl:
-          'https://live.staticflickr.com/4043/4438260868_cc79b3369d_z.jpg',
+          'https://i.pinimg.com/236x/5e/6b/89/5e6b89682d45f4e6ebf550bf8b738623--anime-fantasy-cosplay-ideas.jpg',
     ),
     Product(
       id: 'p4',
-      title: 'A Pan',
+      title: 'Soupa de Macaco',
       description: 'Prepare any meal you want.',
       price: 49.99,
       imageUrl:
-          'https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Cast-Iron-Pan.jpg/1024px-Cast-Iron-Pan.jpg',
+          'https://i0.wp.com/www.mobileworldlive.com/wp-content/uploads/2019/12/Brazil.png?fit=650%2C400&ssl=1',
     ),
   ];
 
@@ -43,7 +43,7 @@ class ProductsOverviewScreeen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('My Shop'),
+        title: Text('My Lolis Shop'),
       ),
       body: GridView.builder(
         padding: const EdgeInsets.all(10.0),
