@@ -15,7 +15,7 @@ class ProductsGrid extends StatelessWidget {
     return GridView.builder(
       padding: const EdgeInsets.all(10.0),
       itemCount: products.length,
-      itemBuilder: (ctx, i) => ProductItem(
+      itemBuilder: (context, i) => ProductItem(
         id: products[i].id,
         title: products[i].title,
         imageUrl: products[i].imageUrl,
