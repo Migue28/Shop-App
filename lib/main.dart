@@ -19,6 +19,7 @@ class MyApp extends StatelessWidget {
           accentColor: Colors.deepOrange,
           fontFamily: 'Lato',
         ),
+        debugShowCheckedModeBanner: false,
         home: ProductsOverviewScreeen(),
         routes: {
           ProductDetailScreen.routeName: (context) => ProductDetailScreen(),
