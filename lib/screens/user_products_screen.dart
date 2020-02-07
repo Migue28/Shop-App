@@ -13,7 +13,6 @@ class UserProductsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final productsData = Provider.of<ProductsProvider>(
       context,
-      listen: false,
     );
 
     return Scaffold(

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../providers/product.dart';
+import '../providers/products_provider.dart';
 
 class EditProductScreen extends StatefulWidget {
   static const routeName = '/edit-products';
@@ -47,31 +49,60 @@ class _EditProductScreenState extends State<EditProductScreen> {
   }
 
   void _saveForm() {
+    final isValid = _form.currentState.validate();
+    if (!isValid) {
+      return;
+    }
     _form.currentState.save();
-
-    print(_editedProduct.title);
-    print(_editedProduct.price);
-    print(_editedProduct.description);
-    print(_editedProduct.imageUrl);
-    print(_editedProduct.id);
+    
+    Provider.of<ProductsProvider>(
+      context,
+      listen: false,
+    ).addProduct(_editedProduct);
+    Navigator.of(context).pop();
   }
 
-  _validateText(value) {
+  _validateTitle(value) {
     if (value.isEmpty) {
-      return 'Please provide a value.';
+      return 'Please enter a title.';
     }
     return null;
   }
 
-  _validateNumber(value) {
-    if(value.isEmpty) {
+  _validatePrice(value) {
+    if (value.isEmpty) {
       return 'Please enter a price.';
     }
-    if(double.tryParse(value) == null) {
+    if (double.tryParse(value) == null) {
       return 'Please enter a valid number.';
     }
-    if(double.parse(value) < 0){
+    if (double.parse(value) < 0) {
       return 'Please enter a number greater than 0.';
+    }
+    return null;
+  }
+
+  _validateDescription(value) {
+    if (value.isEmpty) {
+      return 'Please enter a description.';
+    }
+    if (value.length < 10) {
+      return 'The description should have at least 10 characters.';
+    }
+    return null;
+  }
+
+  _validateImageUrl(String value) {
+    if (value.isEmpty) {
+      return 'Please enter a url.';
+    }
+    if (!value.startsWith('http') && (!value.startsWith('https'))) {
+      return 'Please enter a valid url.';
+    }
+    if (!value.endsWith('.png') &&
+        (!value.endsWith('.jpg')) &&
+        (!value.endsWith('.jpeg'))) {
+      return 'Please enter a valid image url.';
     }
     return null;
   }
@@ -93,7 +124,6 @@ class _EditProductScreenState extends State<EditProductScreen> {
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Form(
-          autovalidate: true,
           key: _form,
           child: ListView(
             children: <Widget>[
@@ -114,7 +144,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                     id: null,
                   );
                 },
-                validator: (value) => _validateText(value),
+                validator: (value) => _validateTitle(value),
               ),
               Divider(),
               TextFormField(
@@ -136,7 +166,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                     id: null,
                   );
                 },
-                validator: (value) => _validateNumber(value),
+                validator: (value) => _validatePrice(value),
               ),
               Divider(),
               TextFormField(
@@ -155,7 +185,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                     id: null,
                   );
                 },
-                validator: (value) => _validateText(value),
+                validator: (value) => _validateDescription(value),
               ),
               Divider(),
               Row(
@@ -204,7 +234,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                           id: null,
                         );
                       },
-                      validator: (value) => _validateText(value),
+                      validator: (value) => _validateImageUrl(value),
                     ),
                   ),
                 ],
