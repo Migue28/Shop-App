@@ -17,6 +17,8 @@ class UserProductItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scaffold = Scaffold.of(context);
+
     return ListTile(
       title: Text(title),
       leading: CircleAvatar(
@@ -39,7 +41,6 @@ class UserProductItem extends StatelessWidget {
             IconButton(
               icon: Icon(Icons.delete),
               onPressed: () {
-                bool borrar = false;
                 showDialog(
                   context: context,
                   builder: (context) => AlertDialog(
@@ -48,19 +49,32 @@ class UserProductItem extends StatelessWidget {
                     actions: <Widget>[
                       FlatButton(
                         onPressed: () {
-                          borrar = false;
                           Navigator.of(context).pop();
                         },
                         child: Text('No'),
                       ),
                       FlatButton(
-                        onPressed: () {
-                          borrar = true;
-
-                          Provider.of<ProductsProvider>(context, listen: false)
-                              .deleteProduct(id);
-
+                        onPressed: () async {
                           Navigator.of(context).pop();
+
+                          try {
+                            await Provider.of<ProductsProvider>(
+                              context,
+                              listen: false,
+                            ).deleteProduct(id);
+                          } catch (error) {
+                            scaffold.showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  'Deleting failed!',
+                                  textAlign: TextAlign.center,
+                                ),
+                                duration: Duration(
+                                  seconds: 2,
+                                ),
+                              ),
+                            );
+                          }
                         },
                         child: Text('Sí'),
                       ),

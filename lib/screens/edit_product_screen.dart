@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:intl/number_symbols_data.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/product.dart';
@@ -86,16 +88,14 @@ class _EditProductScreenState extends State<EditProductScreen> {
       _isLoading = true;
     });
     if (_editedProduct.id != null) {
-      Provider.of<ProductsProvider>(
+      await Provider.of<ProductsProvider>(
         context,
         listen: false,
       ).updateProduct(
         _editedProduct.id,
         _editedProduct,
       );
-      setState(() {
-        _isLoading = false;
-      });
+
       Navigator.of(context).pop();
     } else {
       try {
@@ -119,12 +119,17 @@ class _EditProductScreenState extends State<EditProductScreen> {
             ],
           ),
         );
-      } finally {
+      }
+      /* finally {
         setState(() {
           _isLoading = false;
         });
         Navigator.of(context).pop();
-      }
+      } */
+      setState(() {
+        _isLoading = false;
+      });
+      Navigator.of(context).pop();
     }
   }
 
@@ -165,9 +170,10 @@ class _EditProductScreenState extends State<EditProductScreen> {
     if (!value.startsWith('http') && (!value.startsWith('https'))) {
       return 'Please enter a valid url.';
     }
-    if (!value.endsWith('.png') &&
-        (!value.endsWith('.jpg')) &&
-        (!value.endsWith('.jpeg'))) {
+
+    if (!value.endsWith('png') &&
+        (!value.endsWith('jpg')) &&
+        (!value.endsWith('jpeg'))) {
       return 'Please enter a valid image url.';
     }
     return null;
@@ -188,9 +194,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
         ],
       ),
       body: _isLoading
-          ? Center(
-              child: CircularProgressIndicator(),
-            )
+          ? CircularProgressIndicator()
           : Padding(
               padding: EdgeInsets.all(16.0),
               child: Form(
