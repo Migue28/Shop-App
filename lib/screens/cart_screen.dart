@@ -5,8 +5,57 @@ import '../providers/cart.dart' show Cart;
 import '../widgets/cart_item.dart';
 import '../providers/orders.dart';
 
-class CartScreen extends StatelessWidget {
+class CartScreen extends StatefulWidget {
   static const routeName = '/cart';
+
+  @override
+  _CartScreenState createState() => _CartScreenState();
+}
+
+class _CartScreenState extends State<CartScreen> {
+  bool _isLoading = false;
+  bool _orderSuccess = false;
+
+  Future<void> _addOrder(cartProducts, total) async {
+    setState(() {
+      _isLoading = true;
+      _orderSuccess = false;
+    });
+
+    try {
+      await Provider.of<Orders>(
+        context,
+        listen: false,
+      ).addOrder(cartProducts, total).then((_) {
+        setState(() {
+          _orderSuccess = true;
+          print('setState orderSuccess');
+        });
+      });
+      print('despues de Provider Orders');
+    } catch (error) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text('An error ocurred!'),
+          content: Text('Something went wrong.'),
+          actions: <Widget>[
+            FlatButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Okay'),
+            )
+          ],
+        ),
+      );
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+      print(_orderSuccess);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,14 +84,23 @@ class CartScreen extends StatelessWidget {
                   ),
                   FlatButton(
                     child: Text('Order Now'),
-                    onPressed: () {
-                      Provider.of<Orders>(context, listen: false).addOrder(
-                        cart.items.values.toList(),
-                        cart.totalAmount,
-                      );
+                    onPressed: _isLoading
+                        ? () {}
+                        : () {
+                            print('antes de Order now');
+                            _addOrder(
+                              cart.items.values.toList(),
+                              cart.totalAmount,
+                            ).then((_) {
+                              if (_orderSuccess) {
+                                print('if orderSucess');
+                                cart.clear();
+                              }
+                            });
 
-                      cart.clear();
-                    },
+                            print('despues de Order now');
+                            print(_orderSuccess);
+                          },
                     textColor: Theme.of(context).primaryColor,
                   )
                 ],

@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:intl/number_symbols_data.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/product.dart';
