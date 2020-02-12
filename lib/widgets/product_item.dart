@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import '../screens/products_detail_screen.dart';
 import '../providers/product.dart';
 import '../providers/cart.dart';
-import '../providers/products_provider.dart';
 
 class ProductItem extends StatelessWidget {
   // final String id;
@@ -51,18 +50,7 @@ class ProductItem extends StatelessWidget {
               icon: Icon(
                   product.isFavorite ? Icons.favorite : Icons.favorite_border),
               onPressed: () {
-                try {
-                  product.toggleFavoriteStatus();
-                  Provider.of<ProductsProvider>(
-                    context,
-                    listen: false,
-                  ).updateProduct(product.id, product);
-                } catch (error) {
-                  SnackBar(
-                    content: Text('No se pudo poner de favorito.'),
-                    backgroundColor: Colors.red,
-                  );
-                }
+                product.toggleFavoriteStatus();
               },
               color: Theme.of(context).accentColor,
             ),
