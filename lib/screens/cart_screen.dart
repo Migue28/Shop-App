@@ -29,10 +29,8 @@ class _CartScreenState extends State<CartScreen> {
       ).addOrder(cartProducts, total).then((_) {
         setState(() {
           _orderSuccess = true;
-          print('setState orderSuccess');
         });
       });
-      print('despues de Provider Orders');
     } catch (error) {
       showDialog(
         context: context,
@@ -53,7 +51,6 @@ class _CartScreenState extends State<CartScreen> {
       setState(() {
         _isLoading = false;
       });
-      print(_orderSuccess);
     }
   }
 
@@ -83,23 +80,20 @@ class _CartScreenState extends State<CartScreen> {
                     backgroundColor: Theme.of(context).primaryColor,
                   ),
                   FlatButton(
-                    child: Text('Order Now'),
-                    onPressed: _isLoading
-                        ? () {}
+                    child: _isLoading
+                        ? CircularProgressIndicator()
+                        : Text('Order Now'),
+                    onPressed: _isLoading || cart.totalAmount <= 0
+                        ? null
                         : () {
-                            print('antes de Order now');
                             _addOrder(
                               cart.items.values.toList(),
                               cart.totalAmount,
                             ).then((_) {
                               if (_orderSuccess) {
-                                print('if orderSucess');
                                 cart.clear();
                               }
                             });
-
-                            print('despues de Order now');
-                            print(_orderSuccess);
                           },
                     textColor: Theme.of(context).primaryColor,
                   )
