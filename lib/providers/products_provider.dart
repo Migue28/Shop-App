@@ -43,8 +43,9 @@ class ProductsProvider with ChangeNotifier {
   ];
 
   final String authToken;
+  final String userId;
 
-  ProductsProvider(this.authToken, this._items);
+  ProductsProvider(this.authToken, this.userId, this._items);
 
   List<Product> get items => [..._items];
 
@@ -57,15 +58,22 @@ class ProductsProvider with ChangeNotifier {
   }
 
   Future<void> fetchAndSetsProducts() async {
-    final url = 'https://flutter-shop-app-4bd8d.firebaseio.com/products.json?auth=$authToken';
+    var url =
+        'https://flutter-shop-app-4bd8d.firebaseio.com/products.json?auth=$authToken';
     try {
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
       final List<Product> loadedProducts = [];
 
-      if(extractedData == null) {
+      if (extractedData == null) {
         return;
       }
+
+      url =
+          'https://flutter-shop-app-4bd8d.firebaseio.com/userFavorites/$userId.json?auth=$authToken';
+      final favoriteResponse = await http.get(url);
+
+      final favoriteData = json.decode(favoriteResponse.body);
 
       extractedData.forEach((prodId, prodData) {
         loadedProducts.add(Product(
@@ -74,10 +82,11 @@ class ProductsProvider with ChangeNotifier {
           description: prodData['description'],
           price: prodData['price'],
           imageUrl: prodData['imageUrl'],
-          isFavorite: prodData['isFavorite'],
+          isFavorite:
+              favoriteData == null ? false : favoriteData[prodId] ?? false,
         ));
       });
-      _items = loadedProducts;
+      _items = loadedProducts; 
 
       notifyListeners();
     } catch (error) {
@@ -86,7 +95,8 @@ class ProductsProvider with ChangeNotifier {
   }
 
   Future<void> addProduct(Product product) async {
-    final url = 'https://flutter-shop-app-4bd8d.firebaseio.com/products.json?auth=$authToken';
+    final url =
+        'https://flutter-shop-app-4bd8d.firebaseio.com/products.json?auth=$authToken';
     try {
       final response = await http.post(
         url,
@@ -95,7 +105,6 @@ class ProductsProvider with ChangeNotifier {
           'description': product.description,
           'imageUrl': product.imageUrl,
           'price': product.price,
-          'isFavorite': product.isFavorite,
         }),
       );
 
