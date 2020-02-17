@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 
+import '../models/http_exception.dart';
+
 class Auth with ChangeNotifier {
   String _token;
   DateTime _expiryDate;
@@ -24,8 +26,14 @@ class Auth with ChangeNotifier {
           },
         ),
       );
-      print(json.decode(response.body));
-    } catch (error) {}
+      final responseBody = json.decode(response.body);
+
+      if (responseBody['error'] != null) {
+        throw HttpException(responseBody['error']['message']);
+      }
+    } catch (error) {
+      throw error;
+    }
   }
 
   Future<void> singup(String email, String password) async {
@@ -33,6 +41,6 @@ class Auth with ChangeNotifier {
   }
 
   Future<void> login(String email, String password) async {
-    return _authenticate(email, password, 'signInWithPassword');
+    return _authenticate(email, password, 'verifyPassword');
   }
 }
