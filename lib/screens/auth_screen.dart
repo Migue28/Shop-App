@@ -117,7 +117,7 @@ class _AuthCardState extends State<AuthCard> {
               Navigator.of(ctx).pop();
             },
             child: Text('Okay'),
-          )
+          ),
         ],
       ),
     );
@@ -147,19 +147,18 @@ class _AuthCardState extends State<AuthCard> {
         );
       }
     } on HttpException catch (error) {
-      var errorMessage = 'Authentication failed.';
-      if (error.toString().contains('EMAIL_EXIST')) {
+      var errorMessage = 'Authentication failed';
+      if (error.toString().contains('EMAIL_EXISTS')) {
         errorMessage = 'This email address is already in use.';
       } else if (error.toString().contains('INVALID_EMAIL')) {
-        errorMessage = 'This is not a valid email address.';
+        errorMessage = 'This is not a valid email address';
       } else if (error.toString().contains('WEAK_PASSWORD')) {
-        errorMessage = 'This password is to weak.';
+        errorMessage = 'This password is too weak.';
       } else if (error.toString().contains('EMAIL_NOT_FOUND')) {
         errorMessage = 'Could not find a user with that email.';
       } else if (error.toString().contains('INVALID_PASSWORD')) {
-        errorMessage = 'Invalid password';
+        errorMessage = 'Invalid password.';
       }
-
       _showErrorDialog(errorMessage);
     } catch (error) {
       const errorMessage =
